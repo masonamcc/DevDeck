@@ -1,6 +1,6 @@
-# React + Vite
+# Dev Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+As a developer or SWE, you'll find a lot of applications aksking for your GitHub url. This repo is a template you can use to act as your development portfolio. 
 
 Currently, two official plugins are available:
 
