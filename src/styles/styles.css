@@ -10,7 +10,7 @@
     --faint: rgba(255,255,255,.2)
 }
 
-.font-code {
+.monospace {
     font-family: monospace;
     font-size: 16px;
 }
@@ -78,6 +78,10 @@ h6 {
     color: rgba(255,255,255,.08)
 }
 
+.color-light {
+    color: rgba(255,255,255,.5)
+}
+
 
 .master-container {
     background: var(--bg-color);
@@ -121,7 +125,7 @@ h6 {
     /*background-color: orange;*/
     /*flex: 1;*/
     width: 100%;
-    height: 100%;
+    height: 95%;
     /*height: 100%;*/
     display: flex;
     flex-direction: row;
@@ -556,6 +560,7 @@ h6 {
 .section-header {
     display: flex;
     align-items: center;
+    margin-bottom: 1rem;
 }
 
 .section {
@@ -563,12 +568,17 @@ h6 {
     padding-block: 2rem;
 }
 
+.grid-2-col {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) ;
+    gap: 1rem;
+}
+
 /* GitHub repo grid */
 .repo-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1rem;
-    margin-top: 1.5rem;
 }
 
 .repo-card {

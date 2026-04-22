@@ -4,6 +4,7 @@ export function useGitHubRepos(username) {
     const [repos, setRepos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [projects, setProjects] = useState([])
 
     useEffect(() => {
         if (!username) return;
@@ -25,6 +26,7 @@ export function useGitHubRepos(username) {
                 return res.json();
             })
             .then(data => {
+                // console.log('GitHub Repos:', data);
                 setRepos(data.filter(r => !r.fork));
                 setLoading(false);
             })

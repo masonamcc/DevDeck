@@ -20,7 +20,7 @@ export default function Navbar() {
                 <p style={{fontWeight: '700'}}>{config.firstName} {config.lastName}</p>
             </div>
 
-            <div className={'nav-row-container is-gap-2 font-code'}>
+            <div className={'nav-row-container is-gap-2 monospace'}>
                 <a>about</a>
                 <a>bio</a>
             </div>
