@@ -1,7 +1,7 @@
-import { config } from '../config.js';
-import { useGitHubRepos } from '../hooks/useGitHubRepos.js';
+import {config} from '../config.js';
+import {useGitHubRepos} from '../hooks/useGitHubRepos.js';
 
-function RepoCard({ repo }) {
+function RepoCard({repo}) {
 
     console.log(repo)
 
@@ -35,22 +35,45 @@ function RepoCard({ repo }) {
 }
 
 export default function Home() {
-    const { repos, loading, error } = useGitHubRepos(config.githubUsername);
+    const {repos, loading, error} = useGitHubRepos(config.githubUsername);
 
     return (
-        <div className="mainframe-grid">
+        <div className="mainframe-grid bg-dark">
             <div className="mainframe-section scroll column vertical-center flex-col">
                 <div className="fullwidth vertical-center width-50">
 
-                    <div className="color-white is-col-span-3 flex-col mb-1-children py-10" style={{ justifyContent: 'center' }}>
-                        <div>
-                            <p className="accent">{config.location}</p>
+                    <div className="color-white is-col-span-3 grid-2-col mb-1-children py-4"
+                         style={{justifyContent: 'center'}}>
+                        <div className="name-circle-container ">
+                            <svg viewBox="0 0 200 200" className="name-circle-svg">
+                                <defs>
+                                    <path
+                                        id="circlePath"
+                                        d="M 100,100 m -80,0 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0"
+                                    />
+                                </defs>
+                                <text className="name-circle-text monospace">
+                                    <textPath href="#circlePath">
+                                        <tspan style={{fill: 'white'}}>MASON MCCALL</tspan> • SOFTWARE ENGINEER •
+                                    </textPath>
+                                </text>
+                            </svg>
                         </div>
-                        <div>
-                            <h1>Full Stack Software Engineer</h1>
+                        <div className={'mb-1-children monospace'}>
+                            <p>{config.location}</p>
+                            <h6 className={'monospace'}>{config.bio}</h6>
+                            <button className={'button bg-accent'}>Resume</button>
                         </div>
-                        <div>
-                            <h6>{config.bio}</h6>
+                    </div>
+
+                    <div className="skills-ticker-wrapper">
+                        <div className="skills-ticker-track">
+                            {(() => {
+                                const sorted = [...config.skills].sort((a, b) => a.localeCompare(b));
+                                return [...sorted, ...sorted, ...sorted];
+                            })().map((skill, i) => (
+                                <span key={i} className="skills-ticker-item">{skill}</span>
+                            ))}
                         </div>
                     </div>
 
@@ -58,7 +81,7 @@ export default function Home() {
                         <div className="section">
                             <div className="section-header gap-1 color-accent">
                                 <p className="monospace">Applications</p>
-                                <div className="horizon-line-faint" />
+                                <div className="horizon-line-faint"/>
                             </div>
 
                             {loading && (
@@ -76,18 +99,19 @@ export default function Home() {
                                             repo.topics?.some(topic => topic.includes('app'))
                                         )
                                         .map(repo => (
-                                            <RepoCard key={repo.id} repo={repo} />
+                                            <RepoCard key={repo.id} repo={repo}/>
                                         ))}
                                 </div>
                             )}
                         </div>
                     )}
 
+
                     {config.projects.length > 0 && (
                         <div className="section">
                             <div className="section-header gap-1 color-accent">
                                 <p className="monospace">Projects</p>
-                                <div className="horizon-line-faint" />
+                                <div className="horizon-line-faint"/>
                             </div>
 
                             {loading && (
@@ -101,9 +125,10 @@ export default function Home() {
                             {!loading && !error && (
                                 <>
                                     {config.projects.map(project => (
-                                        <div className={'mb-1-children'}>
-                                            <div className={'grid-2-col gap-1'}>
-                                                <h6 className={'color-white'} style={{fontWeight: 700}}>{project.projectName}</h6>
+                                        <div className={"grid-2-col gap-1s"}>
+                                            <div className={"mb-1-children"}>
+                                                <h6 className={'color-white monospace'}
+                                                    style={{fontWeight: 700}}>{project.projectName}</h6>
                                                 <p className={'monospace color-light'}>{project.projectDescription}</p>
                                             </div>
 
@@ -111,7 +136,7 @@ export default function Home() {
                                                 {repos
                                                     .filter(repo => repo.name.includes(project.projectName))
                                                     .map(repo => (
-                                                        <RepoCard key={repo.id} repo={repo} />
+                                                        <RepoCard key={repo.id} repo={repo}/>
                                                     ))}
                                             </div>
                                         </div>
@@ -122,10 +147,11 @@ export default function Home() {
                         </div>
                     )}
 
+
                     <div className="section">
                         <div className="section-header gap-1 color-accent">
-                            <p className="monospace">Repositories</p>
-                            <div className="horizon-line-faint" />
+                            <p className="monospace">Other Repositories</p>
+                            <div className="horizon-line-faint"/>
                         </div>
 
                         {loading && (
@@ -137,9 +163,17 @@ export default function Home() {
                         )}
 
                         {!loading && !error && (
+
+
                             <div className="repo-grid">
-                                {repos.filter(repo => !repo.is_template).map(repo => (
-                                    <RepoCard key={repo.id} repo={repo} />
+
+                                {repos.filter(repo =>
+                                    !repo.is_template &&
+                                    !config.projects.some(proj =>
+                                        repo.name.includes(proj.projectName)
+                                    )
+                                ).map(repo => (
+                                    <RepoCard key={repo.id} repo={repo}/>
                                 ))}
                             </div>
                         )}
@@ -148,8 +182,8 @@ export default function Home() {
                     {repos.some(repo => repo.is_template) && (
                         <div className="section">
                             <div className="section-header gap-1 color-accent">
-                                <p className="monospace">Templates</p>
-                                <div className="horizon-line-faint" />
+                                <p className="section-title monospace">Template Repos</p>
+                                <div className="horizon-line-faint"/>
                             </div>
 
                             {loading && (
@@ -163,7 +197,7 @@ export default function Home() {
                             {!loading && !error && (
                                 <div className="repo-grid">
                                     {repos.filter(repo => repo.is_template).map(repo => (
-                                        <RepoCard key={repo.id} repo={repo} />
+                                        <RepoCard key={repo.id} repo={repo}/>
                                     ))}
                                 </div>
                             )}

@@ -5,20 +5,27 @@
 }
 
 :root {
-    --bg-color: #121219;
-    --accent: #bfab7d;
+    --bg-color: linear-gradient(to bottom, #121219, color-mix(in srgb, var(--accent), black 90%));
+    --accent: #35d1f4;
     --faint: rgba(255,255,255,.2)
 }
 
 .monospace {
     font-family: monospace;
-    font-size: 16px;
+}
+
+.inter {
+    font-family: Inter;
 }
 
 /*Colors*/
 
 .accent {
     color: var(--accent)
+}
+
+.bg-accent {
+    background: var(--accent);
 }
 
 /*Texts*/
@@ -32,7 +39,7 @@ h1 {
 h6 {
     font-size: 20px;
     font-weight: 300;
-    line-height: 1.4;
+    line-height: 1.6;
     margin: 0;
 }
 
@@ -563,6 +570,10 @@ h6 {
     margin-bottom: 1rem;
 }
 
+.section-title {
+    width: 20%;
+}
+
 .section {
     width: 100%;
     padding-block: 2rem;
@@ -655,4 +666,59 @@ h6 {
 
 .color-faint-text {
     color: rgba(255, 255, 255, .4);
+}
+
+/* Skills ticker */
+.skills-ticker-wrapper {
+    width: 100%;
+    overflow: hidden;
+    padding-block: 0.75rem;
+    mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+}
+
+.skills-ticker-track {
+    display: flex;
+    gap: 1.25rem;
+    width: max-content;
+    animation: ticker-scroll 60s linear infinite;
+}
+
+.skills-ticker-item {
+    font-family: monospace;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.5);
+    white-space: nowrap;
+    padding: 0.2rem 0.85rem;
+    /*border: 1px solid rgba(255, 255, 255, 0.1);*/
+    border-radius: 999px;
+}
+
+@keyframes ticker-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-33.333%); }
+}
+
+/* Circular spinning name */
+.name-circle-container {
+    width: 400px;
+    height: 400px;
+}
+
+.name-circle-svg {
+    width: 100%;
+    height: 100%;
+    animation: spin-circle 60s linear infinite;
+    transform-origin: center center;
+}
+
+.name-circle-text {
+    font-size: 22px;
+    fill: var(--accent);
+    letter-spacing: 2px;
+}
+
+@keyframes spin-circle {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
