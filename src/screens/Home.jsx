@@ -44,7 +44,15 @@ export default function Home() {
 
                     <div className="color-white is-col-span-3 grid-2-col mb-1-children py-4"
                          style={{justifyContent: 'center'}}>
-                        <div className="name-circle-container ">
+                        <div className={'mobile'}>
+                            <h1>
+                                Mason <br/> McCall
+                            </h1>
+                            <p className={'monospace color-accent mb-1'}>{config.title}</p>
+                            <div className={'horizon-line-faint'} />
+                        </div>
+
+                        <div className="web name-circle-container ">
                             <svg viewBox="0 0 200 200" className="name-circle-svg">
                                 <defs>
                                     <path

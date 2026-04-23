@@ -701,8 +701,8 @@ h6 {
 
 /* Circular spinning name */
 .name-circle-container {
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
 }
 
 .name-circle-svg {
@@ -721,4 +721,71 @@ h6 {
 @keyframes spin-circle {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
+}
+
+/* ── Web ─────────────────────────────────────────────── */
+@media (min-width: 1000px) and (max-width: 1920px) {
+    .mobile {
+        display: none;
+    }
+}
+
+/* ── Mobile ─────────────────────────────────────────────── */
+@media (max-width: 1000px) {
+    h1 {
+        font-size: 80px;
+    }
+
+    h6 {
+        font-size: 14px;
+    }
+
+    p {
+        font-size: 14px;
+    }
+
+    .navbar {
+        padding-inline: 1rem;
+    }
+
+    .padding-4 {
+        padding: 1.5rem;
+    }
+
+    /* Main content column: full-width with breathing room */
+    .width-50 {
+        width: 92%;
+    }
+
+    /* Hero / general sections */
+    .hero-section,
+    .general-section {
+        width: 92%;
+    }
+
+    .web {
+        display: none;
+    }
+
+    /* Collapse two-column grids to single column */
+    .grid-2-col,
+    .has-2-col,
+    .has-3-col {
+        grid-template-columns: 1fr;
+    }
+
+    .is-col-span-2,
+    .is-col-span-3 {
+        grid-column: span 1;
+    }
+
+    /* Section title width was a fixed 20% — let it be natural */
+    .section-title {
+        width: auto;
+    }
+
+    /* Reduce large vertical padding on the intro block */
+    .py-4 {
+        padding-block: 2rem;
+    }
 }

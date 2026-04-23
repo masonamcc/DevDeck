@@ -21,8 +21,7 @@ export default function Navbar() {
             </div>
 
             <div className={'nav-row-container is-gap-2 monospace'}>
-                <a>about</a>
-                <a>bio</a>
+
             </div>
 
         </div>
