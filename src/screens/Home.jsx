@@ -59,6 +59,7 @@ export default function Home() {
                                         id="circlePath"
                                         d="M 100,100 m -80,0 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0"
                                     />
+
                                 </defs>
                                 <text className="name-circle-text monospace">
                                     <textPath href="#circlePath">
@@ -135,8 +136,9 @@ export default function Home() {
                                     {config.projects.map(project => (
                                         <div className={"grid-2-col gap-1s"}>
                                             <div className={"mb-1-children"}>
-                                                <h6 className={'color-white monospace'}
-                                                    style={{fontWeight: 700}}>{project.projectName}</h6>
+                                                <h4 className={'color-white'}
+                                                    style={{fontWeight: 700}}>{project.projectName}</h4>
+                                                <h6>{project.status}</h6>
                                                 <p className={'monospace color-light'}>{project.projectDescription}</p>
                                             </div>
 

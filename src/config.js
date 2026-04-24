@@ -52,6 +52,7 @@ export const config = {
         {
             projectName: 'Vector',
             projectDescription: 'Vector is a web-app and Chrome extension companionship that will allow users to create accounts for their organizations, invite team members, and manage tools and resources such as talk tracks and automation tools. The chrome extension "sidekick" will be the executor of automation tools.',
+            status: 'In Progress'
         }
     ]
 }
