@@ -6,9 +6,6 @@ import { getLangColor } from '../utils/languageColors.js';
 import { config } from '../config.js';
 import {useXFeed} from "../hooks/useXFeed.js";
 import TweetCard from "../components/TweetCard.jsx";
-import {useEffect, useState} from "react";
-
-
 function LanguageBar({ languages }) {
     const total = Object.values(languages).reduce((sum, n) => sum + n, 0);
     if (total === 0) return null;
@@ -44,13 +41,9 @@ export default function RepoDetail() {
     const { repoName } = useParams();
     const navigate = useNavigate();
     const { repo, readme, languages, loading, error } = useGitHubRepoDetail(config.githubUsername, repoName);
-    const [sanitizedRepoName, setSanitizedRepoName] = useState('')
-    const {tweets, users, loading: xLoading, error: xError} = useXFeed(sanitizedRepoName, config.xUsername);
-
-
-    useEffect(() => {
-        setSanitizedRepoName(repoName.split('-').join(''));
-    }, [repoName]);
+    const { tweets, users, loading: xLoading, error: xError } = useXFeed(config.xUsername);
+    const hashtag = repoName.replace(/-/g, '').toLowerCase();
+    const repoTweets = tweets.filter(t => t.text.toLowerCase().includes(`#${hashtag}`));
 
     if (loading) {
         return (
@@ -156,11 +149,11 @@ export default function RepoDetail() {
                     </div>
 
                     <div style={{flex: .5}}>
-                        {(tweets.length > 0 || xLoading || xError) && (
+                        {(repoTweets.length > 0 || xLoading || xError) && (
                             <div className="section">
                                 <div className="section-header gap-1 color-accent">
                                     <p className="monospace" style={{ whiteSpace: 'nowrap' }}>
-                                        Updates
+                                        #{hashtag}
                                     </p>
                                     <div className="horizon-line-faint"/>
                                 </div>
@@ -175,7 +168,7 @@ export default function RepoDetail() {
 
                                 {!xLoading && !xError && (
                                     <div className="tweet-grid">
-                                        {tweets.map(tweet => (
+                                        {repoTweets.map(tweet => (
                                             <TweetCard key={tweet.id} tweet={tweet} author={users.get(tweet.author_id)}/>
                                         ))}
                                     </div>

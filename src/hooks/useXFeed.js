@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 
-export function useXFeed(hashtag, username) {
+export function useXFeed(username) {
     const [tweets, setTweets] = useState([]);
     const [users, setUsers] = useState(new Map());
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        if (!hashtag || !username) return;
+        if (!username) return;
 
         setLoading(true);
         setError(null);
@@ -32,11 +32,7 @@ export function useXFeed(hashtag, username) {
                     .then(data => ({ data, user }));
             })
             .then(({ data, user }) => {
-                const tag = hashtag.toLowerCase();
-                const filtered = (data.data ?? []).filter(t =>
-                    t.text.toLowerCase().includes(`#${tag}`)
-                );
-                setTweets(filtered);
+                setTweets(data.data ?? []);
                 const userMap = new Map(
                     (data.includes?.users ?? []).map(u => [u.id, u])
                 );
@@ -48,7 +44,7 @@ export function useXFeed(hashtag, username) {
                 setError(err.message);
                 setLoading(false);
             });
-    }, [hashtag, username]);
+    }, [username]);
 
     return { tweets, users, loading, error };
 }

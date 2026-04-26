@@ -49,7 +49,7 @@ export const config = {
         "Authentication (JWT & API Keys)"
     ],
     xUsername: 'masonamccall',
-    xHashtag: 'test',
+    xHashtag: 'devtools',
     projects: [
         {
             projectName: 'Vector',

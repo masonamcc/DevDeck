@@ -1,12 +1,10 @@
 import {config} from '../config.js';
 import {useGitHubRepos} from '../hooks/useGitHubRepos.js';
-import {useXFeed} from '../hooks/useXFeed.js';
 import RepoCard from '../components/RepoCard.jsx';
 import TweetCard from '../components/TweetCard.jsx';
 
 export default function Home() {
     const {repos, loading, error} = useGitHubRepos(config.githubUsername);
-    const {tweets, users, loading: xLoading, error: xError} = useXFeed(config.xHashtag, config.xUsername);
 
     return (
         <div className="mainframe-grid bg-dark">
@@ -56,6 +54,20 @@ export default function Home() {
                             ))}
                         </div>
                     </div>
+
+                    {config.xPosts?.length > 0 && (
+                        <div className="section">
+                            <div className="section-header gap-1 color-accent">
+                                <p className="monospace">#{config.xHashtag}</p>
+                                <div className="horizon-line-faint"/>
+                            </div>
+                            <div className="tweet-grid">
+                                {config.xPosts.map(post => (
+                                    <TweetCard key={post.id} tweet={post} author={post.author}/>
+                                ))}
+                            </div>
+                        </div>
+                    )}
 
                     {repos.some(repo => repo.topics?.some(topic => topic.includes('app'))) && (
                         <div className="section">
