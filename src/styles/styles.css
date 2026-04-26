@@ -1191,7 +1191,16 @@ h6 {
 /* ── Mobile ─────────────────────────────────────────────── */
 @media (max-width: 1000px) {
     h1 {
-        font-size: 60px;
+        font-size: 40px;
+    }
+
+    h4 {
+        font-size:16px;
+        /*background: orange;*/
+    }
+
+    h5 {
+        font-size: 20px;
     }
 
     h6 {
@@ -1266,5 +1275,25 @@ h6 {
         border-radius: .5rem;
         color: white;
         transition: border-color .2s, background .2s;
+    }
+
+    .resume-btn {
+        display: inline-block;
+        text-decoration: none;
+        color: #121219;
+        font-weight: 600;
+        font-size: 14px;
+        border-radius: .4rem;
+        padding: .5rem 1rem;
+        transition: filter .2s;
+    }
+
+    .skills-ticker-item {
+
+        font-size: 12px;
+
+        padding: 0.2rem 0.3rem;
+        /*border: 1px solid rgba(255, 255, 255, 0.1);*/
+        border-radius: 999px;
     }
 }

@@ -17,7 +17,7 @@ export default function Navbar() {
         <div className={'navbar'}>
 
             <div className={'nav-row-container is-gap-1'}>
-                <img src={logo} height={'30px'}/>
+                <img src={logo} height={'30px'} onClick={() => navigate('/')}/>
                 {/*<p className={'monospace'} style={{fontWeight: '700'}}>{config.initials}</p>*/}
             </div>
 

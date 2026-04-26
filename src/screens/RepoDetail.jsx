@@ -125,7 +125,7 @@ export default function RepoDetail() {
                             <div className="section mobile">
                                 <div className="section-header gap-1 color-accent">
                                     <p className="monospace" style={{ whiteSpace: 'nowrap' }}>
-                                        #{hashtag}
+                                        Updates
                                     </p>
                                     <div className="horizon-line-faint"/>
                                 </div>
@@ -182,7 +182,7 @@ export default function RepoDetail() {
                             <div className="section">
                                 <div className="section-header gap-1 color-accent">
                                     <p className="monospace" style={{ whiteSpace: 'nowrap' }}>
-                                        #{hashtag}
+                                        Updates
                                     </p>
                                     <div className="horizon-line-faint"/>
                                 </div>

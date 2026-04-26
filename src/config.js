@@ -5,7 +5,7 @@ export const config = {
     title: 'Full-Stack Software Engineer',
     hero: 'Full-Stack Software Engineer',
     location: 'Glassboro, NJ - United States',
-    bio: "Cloud Engineer by day, builder by night. I spend most of my time working in cloud infrastructure and backend systems, but I’m always creating. I like turning messy manual workflows into clean automated systems that actually make people faster. Big on good UI, smooth UX, and connecting everything together into one solid experience. Always learning, always building.",
+    bio: "Cloud Engineer by day, builder by night—focused on automating messy workflows into clean, fast systems with strong UI/UX. Always building, always learning.",
     githubUsername: 'masonamcc',
     resumeLink: 'https://docs.google.com/document/d/1SVzHxw1JxNlT8V_GgI2o1mKSMz2MDyqL0A6VpFcxFco/edit?usp=sharing',
     skills: [
