@@ -2,7 +2,21 @@
   "permissions": {
     "allow": [
       "Bash(dir:*)",
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "Bash(vercel --version)",
+      "Bash(vercel inspect *)",
+      "Bash(vercel ls *)",
+      "Bash(vercel logs *)",
+      "Bash(vercel link *)",
+      "Bash(vercel env *)",
+      "Bash(curl -s \"https://dev-deck-fucrdpkl0-masonamccs-projects.vercel.app/api/github/user/repos?per_page=1\")",
+      "Bash(curl -s \"https://masonamccall.com/api/github/user/repos?per_page=1\")",
+      "Bash(curl -sL \"https://masonamccall.com/api/github/user/repos?per_page=1\")",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(vercel --prod)",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d['builds'][0]['config'], indent=2\\)\\)\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); routes=d['builds'][0]['config'].get\\('vercelConfig',{}\\).get\\('routes',[]\\); print\\(json.dumps\\(routes, indent=2\\)\\)\")"
     ]
   }
 }
