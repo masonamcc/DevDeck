@@ -12,24 +12,35 @@ export function useXFeed(hashtag, username) {
         setLoading(true);
         setError(null);
 
-        const params = new URLSearchParams({
-            query: `#${hashtag} from:${username}`,
-            'tweet.fields': 'created_at,public_metrics',
-            expansions: 'author_id',
-            'user.fields': 'name,username,profile_image_url',
-            max_results: '10',
-        });
-
-        fetch(`/api/x/2/tweets/search/recent?${params}`)
+        fetch(`/api/x/2/users/by/username/${username}`)
             .then(res => {
                 if (!res.ok) throw new Error(`X API error: ${res.status}`);
                 return res.json();
             })
-            .then(data => {
-                setTweets(data.data ?? []);
+            .then(({ data: user }) => {
+                const params = new URLSearchParams({
+                    'tweet.fields': 'created_at,public_metrics',
+                    expansions: 'author_id',
+                    'user.fields': 'name,username,profile_image_url',
+                    max_results: '100',
+                });
+                return fetch(`/api/x/2/users/${user.id}/tweets?${params}`)
+                    .then(res => {
+                        if (!res.ok) throw new Error(`X API error: ${res.status}`);
+                        return res.json();
+                    })
+                    .then(data => ({ data, user }));
+            })
+            .then(({ data, user }) => {
+                const tag = hashtag.toLowerCase();
+                const filtered = (data.data ?? []).filter(t =>
+                    t.text.toLowerCase().includes(`#${tag}`)
+                );
+                setTweets(filtered);
                 const userMap = new Map(
                     (data.includes?.users ?? []).map(u => [u.id, u])
                 );
+                if (!userMap.has(user.id)) userMap.set(user.id, user);
                 setUsers(userMap);
                 setLoading(false);
             })
