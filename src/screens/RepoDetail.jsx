@@ -71,10 +71,10 @@ export default function RepoDetail() {
 
     return (
         <div className="mainframe-grid bg-dark">
-            <div className="mainframe-section scroll column vertical-center flex-col">
-                <div className="fullwidth width-75 flex gap-2" style={{ paddingBlock: '3rem', alignItems: 'flex-start' }}>
+            <div className="mainframe-section scroll horizon-center flex">
+                <div className="repo-detail-layout py-2">
 
-                    <div style={{flex: 1}}>
+                    <div className={'mb-1-children'}>
                         <button
                             className="repo-detail-back"
                             onClick={() => navigate(-1)}
@@ -106,6 +106,8 @@ export default function RepoDetail() {
                                 <p className="color-light" style={{ marginTop: '0.5rem' }}>{repo.description}</p>
                             )}
 
+
+
                             <div className="repo-detail-meta">
                                 {repo?.stargazers_count > 0 && (
                                     <span className="repo-meta-item">★ {repo.stargazers_count}</span>
@@ -118,6 +120,33 @@ export default function RepoDetail() {
                                 )}
                             </div>
                         </div>
+
+                        {(repoTweets.length > 0 || xLoading || xError) && (
+                            <div className="section mobile">
+                                <div className="section-header gap-1 color-accent">
+                                    <p className="monospace" style={{ whiteSpace: 'nowrap' }}>
+                                        #{hashtag}
+                                    </p>
+                                    <div className="horizon-line-faint"/>
+                                </div>
+
+                                {xLoading && (
+                                    <p className="repo-status color-faint-text">Loading posts...</p>
+                                )}
+
+                                {xError && (
+                                    <p className="repo-status error-message">{xError}</p>
+                                )}
+
+                                {!xLoading && !xError && (
+                                    <div className="tweet-grid-horizontal">
+                                        {repoTweets.map(tweet => (
+                                            <TweetCard key={tweet.id} tweet={tweet} author={users.get(tweet.author_id)}/>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
 
                         {Object.keys(languages).length > 0 && (
                             <div className="section" style={{ paddingBlock: '1.5rem' }}>
@@ -148,7 +177,7 @@ export default function RepoDetail() {
 
                     </div>
 
-                    <div style={{flex: .5}}>
+                    <div className={'web'}>
                         {(repoTweets.length > 0 || xLoading || xError) && (
                             <div className="section">
                                 <div className="section-header gap-1 color-accent">
@@ -176,6 +205,7 @@ export default function RepoDetail() {
                             </div>
                         )}
                     </div>
+
                 </div>
             </div>
         </div>

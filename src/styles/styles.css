@@ -9,7 +9,7 @@
 
 :root {
     --bg-color: linear-gradient(to bottom, #121219, color-mix(in srgb, var(--accent), black 95%));
-    --accent: #ff9a7b;
+    --accent: #45c8ff;
     --faint: rgba(255,255,255,.2);
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -24,7 +24,8 @@ body {
 
 p {
     margin: 0;
-    font-size: 16px;
+    font-size: 14px;
+    line-height: 1.5;
 }
 
 button {
@@ -443,7 +444,9 @@ h6 {
 }
 
 .has-2-col {
-    grid-template-columns: 1fr 1fr;
+    background: chartreuse;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
 }
 
 .has-3-col {
@@ -622,13 +625,18 @@ h6 {
     margin-bottom: 1rem;
 }
 
+.section-header > *:first-child {
+    white-space: nowrap;
+}
+
 .section-title {
     width: 20%;
+
 }
 
 .section {
     width: 100%;
-    padding-block: 2rem;
+    /*padding-block: 2rem;*/
 }
 
 .grid-2-col {
@@ -857,6 +865,20 @@ h6 {
     margin-top: .75rem;
 }
 
+.resume-btn {
+    display: inline-block;
+    text-decoration: none;
+    color: #121219;
+    font-weight: 600;
+    font-size: 15px;
+    border-radius: .4rem;
+    padding: .65rem 1.4rem;
+    transition: filter .2s;
+}
+.resume-btn:hover {
+    filter: brightness(85%);
+}
+
 .repo-detail-gh-btn {
     display: inline-block;
     text-decoration: none;
@@ -1027,8 +1049,38 @@ h6 {
 /* Tweet / X feed */
 .tweet-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
     gap: 1rem;
+}
+
+.tweet-grid-horizontal {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    padding-bottom: 0.5rem;
+}
+
+.tweet-grid-horizontal::-webkit-scrollbar {
+    height: 4px;
+}
+
+.tweet-grid-horizontal::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.tweet-grid-horizontal::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+}
+
+.tweet-grid-horizontal > .tweet-card {
+    flex: 0 0 80vw;
+    max-width: 320px;
+    scroll-snap-align: start;
 }
 
 .tweet-card {
@@ -1115,6 +1167,20 @@ h6 {
     color: var(--accent);
 }
 
+/* Repo detail two-column layout */
+.repo-detail-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    align-items: flex-start;
+    /*padding: 3rem;*/
+    width: 50%;
+}
+
+.repo-detail-layout > * {
+    min-width: 0;
+}
+
 /* ── Web ─────────────────────────────────────────────── */
 @media (min-width: 1000px) and (max-width: 3000px) {
     .mobile {
@@ -1160,16 +1226,16 @@ h6 {
     }
 
     /* Collapse two-column grids to single column */
-    .grid-2-col,
-    .has-2-col,
-    .has-3-col {
-        grid-template-columns: 1fr;
-    }
+    /*.grid-2-col,*/
+    /*.has-2-col,*/
+    /*.has-3-col {*/
+    /*    grid-template-columns: repeat(2, 1fr);*/
+    /*}*/
 
-    .is-col-span-2,
-    .is-col-span-3 {
-        grid-column: span 1;
-    }
+    /*.is-col-span-2,*/
+    /*.is-col-span-3 {*/
+    /*    grid-column: span 1;*/
+    /*}*/
 
     /* Section title width was a fixed 20% — let it be natural */
     .section-title {
@@ -1179,5 +1245,26 @@ h6 {
     /* Reduce large vertical padding on the intro block */
     .py-4 {
         padding-block: 2rem;
+    }
+
+    .repo-detail-layout {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        align-items: flex-start;
+        /*padding: 2rem;*/
+        width: 90%;
+    }
+
+    .tweet-card {
+        display: flex;
+        flex-direction: column;
+        gap: .75rem;
+        padding: 1.25rem 1.5rem;
+        background: rgba(255, 255, 255, .04);
+        border: 1px solid rgba(255, 255, 255, .08);
+        border-radius: .5rem;
+        color: white;
+        transition: border-color .2s, background .2s;
     }
 }
