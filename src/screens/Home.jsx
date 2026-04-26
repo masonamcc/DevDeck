@@ -1,74 +1,12 @@
-import {Link} from 'react-router-dom';
 import {config} from '../config.js';
 import {useGitHubRepos} from '../hooks/useGitHubRepos.js';
-import {getLangColor} from '../utils/languageColors.js';
-
-function MiniLangBar({languages}) {
-    if (!languages) return null;
-    const entries = Object.entries(languages);
-    if (entries.length === 0) return null;
-    const total = entries.reduce((s, [, b]) => s + b, 0);
-    return (
-        <div className="mini-lang-bar">
-            {entries.map(([lang, bytes]) => (
-                <div
-                    key={lang}
-                    className="mini-lang-segment"
-                    style={{width: `${(bytes / total) * 100}%`, background: getLangColor(lang)}}
-                    title={`${lang}: ${((bytes / total) * 100).toFixed(1)}%`}
-                />
-            ))}
-        </div>
-    );
-}
-
-function RepoCard({repo}) {
-    return (
-        <Link
-            to={`/repo/${repo.name}`}
-            className="repo-card"
-        >
-            <div className="repo-card-header">
-                <span className="repo-card-name">{repo.name}</span>
-                {repo.private && <span className="repo-badge">private</span>}
-            </div>
-
-            {repo.description && (
-                <p className="repo-card-desc">{repo.description}</p>
-            )}
-
-            {/*<MiniLangBar languages={repo.languages}/>*/}
-
-            {repo.languages && Object.keys(repo.languages).length > 0 ? (
-                <div className="repo-card-langs">
-                    {Object.keys(repo.languages).map(lang => (
-                        <span key={lang} className="repo-card-lang-pill">
-                            <span className="repo-card-lang-dot" style={{background: getLangColor(lang)}}/>
-                            {lang}
-                        </span>
-                    ))}
-                </div>
-            ) : repo.language ? (
-                <div className="repo-card-langs">
-                    <span className="repo-card-lang-pill">
-                        <span className="repo-card-lang-dot" style={{background: getLangColor(repo.language)}}/>
-                        {repo.language}
-                    </span>
-                </div>
-            ) : null}
-
-            <div className="repo-card-meta">
-                <span className="repo-meta-item">★ {repo.stargazers_count}</span>
-                {repo.fork === false && repo.forks_count > 0 && (
-                    <span className="repo-meta-item">⑂ {repo.forks_count}</span>
-                )}
-            </div>
-        </Link>
-    );
-}
+import {useXFeed} from '../hooks/useXFeed.js';
+import RepoCard from '../components/RepoCard.jsx';
+import TweetCard from '../components/TweetCard.jsx';
 
 export default function Home() {
     const {repos, loading, error} = useGitHubRepos(config.githubUsername);
+    const {tweets, users, loading: xLoading, error: xError} = useXFeed(config.xHashtag, config.xUsername);
 
     return (
         <div className="mainframe-grid bg-dark">
@@ -118,6 +56,31 @@ export default function Home() {
                             ))}
                         </div>
                     </div>
+
+                    {config.xHashtag && (tweets.length > 0 || xLoading || xError) && (
+                        <div className="section">
+                            <div className="section-header gap-1 color-accent">
+                                <p className="monospace">#{config.xHashtag}</p>
+                                <div className="horizon-line-faint"/>
+                            </div>
+
+                            {xLoading && (
+                                <p className="repo-status color-faint-text">Loading posts...</p>
+                            )}
+
+                            {xError && (
+                                <p className="repo-status error-message">{xError}</p>
+                            )}
+
+                            {!xLoading && !xError && (
+                                <div className="tweet-grid">
+                                    {tweets.map(tweet => (
+                                        <TweetCard key={tweet.id} tweet={tweet} author={users.get(tweet.author_id)}/>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
 
                     {repos.some(repo => repo.topics?.some(topic => topic.includes('app'))) && (
                         <div className="section">

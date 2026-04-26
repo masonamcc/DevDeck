@@ -48,6 +48,8 @@ export const config = {
         "Automation",
         "Authentication (JWT & API Keys)"
     ],
+    xUsername: 'masonamccall',
+    xHashtag: 'test',
     projects: [
         {
             projectName: 'Vector',

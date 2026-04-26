@@ -4,6 +4,10 @@ import remarkGfm from 'remark-gfm';
 import { useGitHubRepoDetail } from '../hooks/useGitHubRepoDetail.js';
 import { getLangColor } from '../utils/languageColors.js';
 import { config } from '../config.js';
+import {useXFeed} from "../hooks/useXFeed.js";
+import TweetCard from "../components/TweetCard.jsx";
+import {useEffect, useState} from "react";
+
 
 function LanguageBar({ languages }) {
     const total = Object.values(languages).reduce((sum, n) => sum + n, 0);
@@ -40,6 +44,13 @@ export default function RepoDetail() {
     const { repoName } = useParams();
     const navigate = useNavigate();
     const { repo, readme, languages, loading, error } = useGitHubRepoDetail(config.githubUsername, repoName);
+    const [sanitizedRepoName, setSanitizedRepoName] = useState('')
+    const {tweets, users, loading: xLoading, error: xError} = useXFeed(sanitizedRepoName, config.xUsername);
+
+
+    useEffect(() => {
+        setSanitizedRepoName(repoName.split('-').join(''));
+    }, [repoName]);
 
     if (loading) {
         return (
@@ -68,81 +79,110 @@ export default function RepoDetail() {
     return (
         <div className="mainframe-grid bg-dark">
             <div className="mainframe-section scroll column vertical-center flex-col">
-                <div className="fullwidth vertical-center width-50" style={{ paddingBlock: '3rem' }}>
+                <div className="fullwidth width-75 flex gap-2" style={{ paddingBlock: '3rem', alignItems: 'flex-start' }}>
 
-                    <button
-                        className="repo-detail-back"
-                        onClick={() => navigate(-1)}
-                    >
-                        ← Back
-                    </button>
+                    <div style={{flex: 1}}>
+                        <button
+                            className="repo-detail-back"
+                            onClick={() => navigate(-1)}
+                        >
+                            ← Back
+                        </button>
 
-                    <div className="repo-detail-header">
+                        <div className="repo-detail-header">
 
-                        <div className={'flex space-between mb-2'} style={{alignItems: 'center'}}>
-                            <div className="repo-detail-title-row">
-                                <h3 className="color-accent monospace" style={{ margin: 0 }}>{repo?.name}</h3>
-                                {repo?.private && <span className="repo-badge">private</span>}
-                                {repo?.is_template && <span className="repo-badge">template</span>}
+                            <div className={'flex space-between mb-2'} style={{alignItems: 'center'}}>
+                                <div className="repo-detail-title-row">
+                                    <h3 className="color-accent monospace" style={{ margin: 0 }}>{repo?.name}</h3>
+                                    {repo?.private && <span className="repo-badge">private</span>}
+                                    {repo?.is_template && <span className="repo-badge">template</span>}
+                                </div>
+
+                                <a
+                                    href={repo?.html_url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="button bg-accent repo-detail-gh-btn"
+                                >
+                                    View on GitHub ↗
+                                </a>
                             </div>
 
-                            <a
-                                href={repo?.html_url}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="button bg-accent repo-detail-gh-btn"
-                            >
-                                View on GitHub ↗
-                            </a>
+
+                            {repo?.description && (
+                                <p className="color-light" style={{ marginTop: '0.5rem' }}>{repo.description}</p>
+                            )}
+
+                            <div className="repo-detail-meta">
+                                {repo?.stargazers_count > 0 && (
+                                    <span className="repo-meta-item">★ {repo.stargazers_count}</span>
+                                )}
+                                {repo?.forks_count > 0 && (
+                                    <span className="repo-meta-item">⑂ {repo.forks_count}</span>
+                                )}
+                                {repo?.open_issues_count > 0 && (
+                                    <span className="repo-meta-item">◎ {repo.open_issues_count} issues</span>
+                                )}
+                            </div>
                         </div>
 
-
-                        {repo?.description && (
-                            <p className="color-light" style={{ marginTop: '0.5rem' }}>{repo.description}</p>
+                        {Object.keys(languages).length > 0 && (
+                            <div className="section" style={{ paddingBlock: '1.5rem' }}>
+                                <div className="section-header gap-1 color-accent">
+                                    <p className="monospace">Languages</p>
+                                    <div className="horizon-line-faint" />
+                                </div>
+                                <LanguageBar languages={languages} />
+                            </div>
                         )}
 
-                        <div className="repo-detail-meta">
-                            {repo?.stargazers_count > 0 && (
-                                <span className="repo-meta-item">★ {repo.stargazers_count}</span>
-                            )}
-                            {repo?.forks_count > 0 && (
-                                <span className="repo-meta-item">⑂ {repo.forks_count}</span>
-                            )}
-                            {repo?.open_issues_count > 0 && (
-                                <span className="repo-meta-item">◎ {repo.open_issues_count} issues</span>
-                            )}
-                        </div>
-                    </div>
-
-                    {Object.keys(languages).length > 0 && (
-                        <div className="section" style={{ paddingBlock: '1.5rem' }}>
+                        <div className="section" style={{ paddingTop: 0 }}>
                             <div className="section-header gap-1 color-accent">
-                                <p className="monospace">Languages</p>
+                                <p className="monospace">README</p>
                                 <div className="horizon-line-faint" />
                             </div>
-                            <LanguageBar languages={languages} />
-                        </div>
-                    )}
 
-                    <div className="section" style={{ paddingTop: 0 }}>
-                        <div className="section-header gap-1 color-accent">
-                            <p className="monospace">README</p>
-                            <div className="horizon-line-faint" />
+                            {readme ? (
+                                <div className="repo-readme">
+                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                        {readme}
+                                    </ReactMarkdown>
+                                </div>
+                            ) : (
+                                <p className="color-faint-text monospace" style={{ fontSize: 14 }}>No README found.</p>
+                            )}
                         </div>
 
-                        {readme ? (
-                            <div className="repo-readme">
-                                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                                    {readme}
-                                </ReactMarkdown>
-                            </div>
-                        ) : (
-                            <p className="color-faint-text monospace" style={{ fontSize: 14 }}>No README found.</p>
-                        )}
                     </div>
 
+                    <div style={{flex: .5}}>
+                        {(tweets.length > 0 || xLoading || xError) && (
+                            <div className="section">
+                                <div className="section-header gap-1 color-accent">
+                                    <p className="monospace" style={{ whiteSpace: 'nowrap' }}>
+                                        Updates
+                                    </p>
+                                    <div className="horizon-line-faint"/>
+                                </div>
 
+                                {xLoading && (
+                                    <p className="repo-status color-faint-text">Loading posts...</p>
+                                )}
 
+                                {xError && (
+                                    <p className="repo-status error-message">{xError}</p>
+                                )}
+
+                                {!xLoading && !xError && (
+                                    <div className="tweet-grid">
+                                        {tweets.map(tweet => (
+                                            <TweetCard key={tweet.id} tweet={tweet} author={users.get(tweet.author_id)}/>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
