@@ -16,7 +16,7 @@ export default function Navbar() {
         <div className={'navbar'}>
 
             <div className={'nav-row-container is-gap-1'}>
-                <p className={'monospace'} style={{fontWeight: '700'}}> >> {config.firstName} {config.lastName}</p>
+                <p className={'monospace'} style={{fontWeight: '700'}}> {config.firstName} {config.lastName}</p>
             </div>
 
             <div className={'nav-row-container is-gap-2 monospace'}>
